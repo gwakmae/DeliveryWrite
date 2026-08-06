@@ -7,6 +7,7 @@ window.DeliveryBook = window.DeliveryBook || {};
    - 입력된 날: 수입/실수령 표시
    - 빈 날: "미입력" — 탭하면 그 날짜 입력폼으로 이동
    - 상단에 월 요약 카드
+   - 실수령(일별·월 순수령)은 정수로 반올림해 표시
    ====================================================== */
 
 DeliveryBook.MonthView = (() => {
@@ -59,8 +60,8 @@ DeliveryBook.MonthView = (() => {
                 dayOfWeek === 0
                     ? "sun"
                     : dayOfWeek === 6
-                      ? "sat"
-                      : "";
+                        ? "sat"
+                        : "";
 
             const rowClass =
                 "day-row" +
@@ -73,70 +74,70 @@ DeliveryBook.MonthView = (() => {
 
             const netCell = result
                 ? '<span class="net-cell">' +
-                  Calc.fmt(result.net) + "원</span>"
+                Calc.fmtNet(result.net) + "원</span>"
                 : '<span class="net-cell missing">+ 입력</span>';
 
             const netCellWrapped = result && result.net < 0
                 ? '<span class="net-cell negative">' +
-                  Calc.fmt(result.net) + "원</span>"
+                Calc.fmtNet(result.net) + "원</span>"
                 : netCell;
 
             rows +=
                 '<div class="' + rowClass + '" data-date="' + key + '">' +
-                    '<div class="date-cell">' +
-                        '<span class="d">' + d + "일</span>" +
-                        '<span class="w ' + wClass + '">' +
-                            weekday +
-                        '</span>' +
-                    '</div>' +
-                    '<div class="income-cell">' + incomeCell + '</div>' +
-                    netCellWrapped +
+                '<div class="date-cell">' +
+                '<span class="d">' + d + "일</span>" +
+                '<span class="w ' + wClass + '">' +
+                weekday +
+                '</span>' +
+                '</div>' +
+                '<div class="income-cell">' + incomeCell + '</div>' +
+                netCellWrapped +
                 '</div>';
         }
 
         container.innerHTML =
             '<section class="panel">' +
-                '<div class="month-nav">' +
-                    '<button type="button" class="day-nav-btn" ' +
-                        'id="prev-month" aria-label="이전 달">◀</button>' +
-                    '<div class="month-title">' +
-                        viewYear + "년 " + (viewMonth + 1) + "월" +
-                    '</div>' +
-                    '<button type="button" class="day-nav-btn" ' +
-                        'id="next-month" aria-label="다음 달">▶</button>' +
-                '</div>' +
+            '<div class="month-nav">' +
+            '<button type="button" class="day-nav-btn" ' +
+            'id="prev-month" aria-label="이전 달">◀</button>' +
+            '<div class="month-title">' +
+            viewYear + "년 " + (viewMonth + 1) + "월" +
+            '</div>' +
+            '<button type="button" class="day-nav-btn" ' +
+            'id="next-month" aria-label="다음 달">▶</button>' +
+            '</div>' +
 
-                '<div class="summary-grid">' +
-                    '<div class="summary-card income">' +
-                        '<span class="label">총 수입</span>' +
-                        '<span class="amount">' +
-                            Calc.fmt(total.income) + "원" +
-                        '</span>' +
-                    '</div>' +
-                    '<div class="summary-card tax">' +
-                        '<span class="label">예상 세금</span>' +
-                        '<span class="amount">' +
-                            Calc.fmt(total.tax) + "원" +
-                        '</span>' +
-                    '</div>' +
-                    '<div class="summary-card expense">' +
-                        '<span class="label">총 지출</span>' +
-                        '<span class="amount">' +
-                            Calc.fmt(total.expense) + "원" +
-                        '</span>' +
-                    '</div>' +
-                    '<div class="summary-card net">' +
-                        '<span class="label">' +
-                            (viewMonth + 1) + "월 순수령 (기록 " +
-                            total.days + "일)" +
-                        '</span>' +
-                        '<span class="amount">' +
-                            Calc.fmt(total.net) + "원" +
-                        '</span>' +
-                    '</div>' +
-                '</div>' +
+            '<div class="summary-grid">' +
+            '<div class="summary-card income">' +
+            '<span class="label">총 수입</span>' +
+            '<span class="amount">' +
+            Calc.fmt(total.income) + "원" +
+            '</span>' +
+            '</div>' +
+            '<div class="summary-card tax">' +
+            '<span class="label">예상 세금</span>' +
+            '<span class="amount">' +
+            Calc.fmt(total.tax) + "원" +
+            '</span>' +
+            '</div>' +
+            '<div class="summary-card expense">' +
+            '<span class="label">총 지출</span>' +
+            '<span class="amount">' +
+            Calc.fmt(total.expense) + "원" +
+            '</span>' +
+            '</div>' +
+            '<div class="summary-card net">' +
+            '<span class="label">' +
+            (viewMonth + 1) + "월 순수령 (기록 " +
+            total.days + "일)" +
+            '</span>' +
+            '<span class="amount">' +
+            Calc.fmtNet(total.net) + "원" +
+            '</span>' +
+            '</div>' +
+            '</div>' +
 
-                '<div class="day-list">' + rows + '</div>' +
+            '<div class="day-list">' + rows + '</div>' +
             '</section>';
 
         bindEvents(container);

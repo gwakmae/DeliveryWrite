@@ -7,6 +7,9 @@ window.DeliveryBook = window.DeliveryBook || {};
    - 예상세금 = (배민 + 쿠팡) × 세율
    - 일일 합계 = (배민 + 쿠팡) − 예상세금 − 지출
    - 지출 = 주유비 + 수리비 + 기타
+
+   계산은 소수점까지 정확하게 하고,
+   화면의 "실수령" 표시만 정수로 반올림한다.
    ====================================================== */
 
 DeliveryBook.Calc = (() => {
@@ -108,12 +111,18 @@ DeliveryBook.Calc = (() => {
         });
     }
 
+    /* 실수령 표시용: 정수로 반올림 (1,234 형태) */
+    function fmtNet(n) {
+        return Math.round(Number(n)).toLocaleString("ko-KR");
+    }
+
     return Object.freeze({
         day,
         month,
         dateKey,
         parseKey,
         weekdayName,
-        fmt
+        fmt,
+        fmtNet
     });
 })();
