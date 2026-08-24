@@ -7,6 +7,8 @@ window.DeliveryBook = window.DeliveryBook || {};
    - 수입(배민/쿠팡)은 항상 보이고,
      지출(주유비/수리비/기타)은 접이식이다
    - 입력하는 즉시 세금·실수령액이 계산된다
+   - 저장 버튼은 쿠팡 수입 바로 아래에 있다
+     (수입 입력 직후 스크롤 없이 바로 저장 가능)
    ====================================================== */
 
 DeliveryBook.DayView = (() => {
@@ -105,6 +107,12 @@ DeliveryBook.DayView = (() => {
                     '</div>' +
                 '</div>' +
 
+                /* 수입 입력 직후 바로 저장할 수 있도록 여기에 둔다 */
+                '<div class="button-row form-actions">' +
+                    '<button type="button" class="action-button" ' +
+                        'id="save-entry">저장</button>' +
+                '</div>' +
+
                 '<details class="expense-details"' + detailsOpen + '>' +
                     '<summary>' +
                         '<span>지출 (주유비 · 수리비 · 기타)</span>' +
@@ -162,15 +170,13 @@ DeliveryBook.DayView = (() => {
 
                 '<div class="calc-preview" id="calc-preview"></div>' +
 
-                '<div class="button-row">' +
-                    '<button type="button" class="action-button" ' +
-                        'id="save-entry">저장</button>' +
-                    (hasEntry
-                        ? '<button type="button" ' +
+                (hasEntry
+                    ? '<div class="button-row">' +
+                      '<button type="button" ' +
                           'class="action-button danger" ' +
-                          'id="delete-entry">이 날 기록 삭제</button>'
-                        : "") +
-                '</div>' +
+                          'id="delete-entry">이 날 기록 삭제</button>' +
+                      '</div>'
+                    : "") +
             '</section>';
 
         bindEvents(container);
